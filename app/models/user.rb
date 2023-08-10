@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_one :userprofile
-  has_many :posts,  -> { order(created_at: :desc) }
+  has_many :posts,  -> { order(created_at: :desc) }, dependent: :destroy
   has_many :likes, through: :posts
   has_many :comments, through: :posts
   has_many :followers, class_name: "Follow", foreign_key: "followed_id"
@@ -17,4 +17,5 @@ class User < ApplicationRecord
     puts "you have successfully loged in"
   end
 
+  scope :user_post, -> {includes(:posts)}
 end
