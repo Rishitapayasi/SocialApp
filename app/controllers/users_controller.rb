@@ -8,13 +8,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    
 
-    render json: [@user, @user.user_profile] 
-  end
-
-  def new
-    @user = User.new
+    render json: [@user, @user.profile] 
   end
 
   def create
@@ -23,12 +18,8 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to @user
     else
-      render :new, status: :unprocessable_entity
+      render json: @user.errors, status: 422
     end
-  end
-
-  def edit
-    @user = User.find(params[:id])
   end
 
   def update
@@ -37,19 +28,18 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to @user
     else
-      render :edit, status: :unprocessable_entity
+      render json: @user.errors, status: 422
     end
   end
 
   def destroy
     @user = User.find(params[:id])
     @user.destroy
-    
   end
 
   private
   def user_params
-    params.require(:user).permit(:email, :password)
+    params.permit(:email, :password)
   end 
 
 end

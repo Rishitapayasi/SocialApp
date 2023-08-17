@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_one  :user_profile
+  has_one  :profile, class_name:"UserProfile" 
   has_many :posts,  -> { order(created_at: :desc) }, dependent: :destroy
   has_many :likes, through: :posts
   has_many :comments, through: :posts

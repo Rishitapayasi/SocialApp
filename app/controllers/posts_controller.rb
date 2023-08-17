@@ -1,53 +1,50 @@
 class PostsController < ApplicationController
-   def index
+  before_action :set_student, only: [ :create , :update ,:destroy]
+  def index
     @posts = Post.all
 
     render json: @posts
   end
 
   def show
-    @post = Post.find(params[:id])
+    @post = @user.posts.find(params[:id])
     
-
-    render json: [@post, @post.comments] 
-  end
-
-  def new
-    @post = Post.new
+    render json: [@post, @post.comments, @post.likes] 
   end
 
   def create
-    @post = Post.new(post_params)
+    # @user = User.find(params[:user_id])
+    @post = @user.posts.new(post_params) 
 
     if @post.save
-      redirect_to @post
+      render json: @post
     else
-      render :new, status: :unprocessable_entity
+      render json: @post.errors, status: 422
     end
   end
 
-  def edit
-    @post= Post.find(params[:id])
-  end
-
   def update
-    @post = Post.find(params[:id])
+    @post = @user.posts.find(params[:id])
 
     if @post.update(post_params)
       redirect_to @post
     else
-      render :edit, status: :unprocessable_entity
+      render json: @post.errors, status: 422
     end
   end
 
   def destroy
-    @post = Post.find(params[:id])
+    @post = @user.posts.find(params[:id])
     @post.destroy
     #render json: @post
   end
 
   private
   def post_params
-    params.require(:post).permit(:content, :image)
+    params.permit(:content, :image)
   end 
+
+  def set_student 
+    @user = User.find(params[:id])
+  end
 end

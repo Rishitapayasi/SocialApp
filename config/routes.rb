@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   root "posts#index"
 
-  resources :posts
   resources :users 
-  resources :user_profiles
-    
- 
+  resources :profiles 
+  resources :users do
+    resources :posts ,only: [ :create , :update ,:destroy]
+  end
 end
