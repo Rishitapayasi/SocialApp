@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
-  before_action :set_student, only: [ :create , :update ,:destroy]
+  # before_action :authenticate_user, except:[:index, :show]
+  before_action :set_post, only: [ :show , :update ,:destroy]
+  before_action :authorize_user, only:[:update, :destroy]
   def index
     @posts = Post.all
 
@@ -7,14 +9,12 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = @user.posts.find(params[:id])
-    
     render json: [@post, @post.comments, @post.likes] 
   end
 
   def create
-    # @user = User.find(params[:user_id])
-    @post = @user.posts.new(post_params) 
+    
+    @post = current_user.posts.build(post_params)
 
     if @post.save
       render json: @post
@@ -24,8 +24,6 @@ class PostsController < ApplicationController
   end
 
   def update
-    @post = @user.posts.find(params[:id])
-
     if @post.update(post_params)
       redirect_to @post
     else
@@ -34,9 +32,9 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = @user.posts.find(params[:id])
+   
     @post.destroy
-    #render json: @post
+  
   end
 
   private
@@ -44,7 +42,14 @@ class PostsController < ApplicationController
     params.permit(:content, :image)
   end 
 
-  def set_student 
-    @user = User.find(params[:id])
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  def authorize_user 
+    unless current_user == @post.user
+      # flash[:error] = "you are not authorize to perform this action"
+      redirect_to post_path(@post)
+    end
   end
 end

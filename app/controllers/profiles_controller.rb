@@ -1,5 +1,8 @@
 class ProfilesController < ApplicationController
-  before_action :set_student, only: [:show, :create , :update ,:destroy]
+  # before_action :authenticate_user, except:[:index, :show]
+  before_action :set_profile, only: [ :show , :update ,:destroy]
+  before_action :authorize_user, only:[:update, :destroy]
+
   def index
     @profile = UserProfile.all 
 
@@ -7,8 +10,6 @@ class ProfilesController < ApplicationController
   end 
    
   def show 
-    @profile = @user.profile.find(params[:id])
-
     render json: @profile
   end
 
@@ -23,9 +24,6 @@ class ProfilesController < ApplicationController
   end 
 
   def update 
-    @user = User.find(params[:user_id])
-     
-    
     if params[:user_id] == @profile.user_id
       if @profile.update(profile_params) 
         render json: @user.profile 
@@ -38,7 +36,6 @@ class ProfilesController < ApplicationController
   end 
 
   def destroy  
-    @profile = Profile.find(params[:id])
     @profile.destroy
   end
  
@@ -47,10 +44,16 @@ class ProfilesController < ApplicationController
     params.permit(:full_name, :bio, :birth_date)
   end
 
-  def set_student 
-    @user = User.all
+  def set_profile
+    @profile = UserProfile.find(params[:id])
   end
-
+  
+  def authorize_user
+    unless current_user == @profile.user
+      flash[:error] = "you are not authorize to perform this action"
+      redirect_to post_path(@post)
+    end
+  end
 end
 
 

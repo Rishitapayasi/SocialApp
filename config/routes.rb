@@ -3,7 +3,14 @@ Rails.application.routes.draw do
 
   resources :users 
   resources :profiles 
-  resources :users do
-    resources :posts ,only: [ :create , :update ,:destroy]
+  resources :posts
+  resources :sessions, only: [:create, :destroy] 
+  resources :posts do 
+    resources :comments, only: [:create, :destroy]
   end
-end
+
+  resources :posts do 
+    resources :likes, only: [:create, :destroy] 
+  end
+end 
+
