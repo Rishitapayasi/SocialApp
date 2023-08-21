@@ -44,6 +44,9 @@ gem "bootsnap", require: false
 
 gem 'bcrypt-ruby'
 
+#serializer
+gem 'active_model_serializers'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

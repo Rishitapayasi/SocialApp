@@ -4,10 +4,10 @@ class CommentsController < ApplicationController
   def create 
     @post = Post.find(params[:id])
     @comment = @post.comments.build(comment_params)
-    @comment.user = current_user 
+    @comment.user = user_id
      
     if @comment.save 
-      flash[:success] = "comment created"
+      render plain:  "comment created"
     else 
       render 'posts/show'
     end
@@ -18,9 +18,9 @@ class CommentsController < ApplicationController
     @post = @comment.post 
 
     if @comment.destroy 
-      flash[:success] = "comment deleted"
+      render plain:  = "comment deleted"
     else 
-      flash[:error] = "error in deleting comment"
+      render plain: = "error in deleting comment"
     end 
   end
 

@@ -1,14 +1,14 @@
 class LikesController < ApplicationController
-   before_action :authenticate_user 
+  #  before_action :authenticate_user 
    
   def create
     @post = Post.find(params[:post_id])
-    @like = @post.likes.build(user: current_user)
+    @like = @post.likes.build(user: user_id)
 
     if @like.save
-      flash[:success] = "liked the comment"
+     render plain: "liked the comment"
     else 
-      flash[:error] = "eroor liking" 
+      render plain:   "eroor liking" 
     end 
   end
 
@@ -17,9 +17,9 @@ class LikesController < ApplicationController
     @like = @post.likes.find(params[:id])
 
     if @like.destroy
-      flash[:success] = "you unliked the post"
+      render plain:  "you unliked the post"
     else 
-      flash[:error] = "error in unliking post"
+      render plain:  "error in unliking post"
     end 
   end
 end

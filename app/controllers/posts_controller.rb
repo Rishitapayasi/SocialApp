@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   # before_action :authenticate_user, except:[:index, :show]
   before_action :set_post, only: [ :show , :update ,:destroy]
-  before_action :authorize_user, only:[:update, :destroy]
+  # before_action :authorize_user, only:[:update, :destroy]
   def index
     @posts = Post.all
 
@@ -14,8 +14,8 @@ class PostsController < ApplicationController
 
   def create
     
-    @post = current_user.posts.build(post_params)
-
+    # @post = current_user.posts.build(post_params)
+    @post = Post.new(user_params)
     if @post.save
       render json: @post
     else
@@ -46,10 +46,10 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
-  def authorize_user 
-    unless current_user == @post.user
-      # flash[:error] = "you are not authorize to perform this action"
-      redirect_to post_path(@post)
-    end
-  end
+  # def authorize_user 
+  #   unless current_user == @post.user
+  #     # flash[:error] = "you are not authorize to perform this action"
+  #     redirect_to post_path(@post)
+  #   end
+  # end
 end
