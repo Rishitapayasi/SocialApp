@@ -1,5 +1,5 @@
 class FollowsController < ApplicationController
-  before_action :authenticate_user, only:[:create, :destroy]
+#   before_action :authenticate_user, only:[:create, :destroy]
 
   def create 
     @user = User.find(params[:followed_id])

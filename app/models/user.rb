@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :followeds, class_name: "Follow", foreign_key: "follower_id"
   has_many  :following_user_posts, through: :followeds, source: :followed
   
+  has_many :images,  as: :imageable,  class_name: "Product"
   
   validates :email, presence: true, uniqueness: true, email: true
   validates :password, presence: true 

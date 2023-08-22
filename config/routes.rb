@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root "user#index"
 
-  resources :users  do
+  resources :users, shallow: true do
     resources :profiles, only: [:show, :create, :update, :destroy]
     resources :posts, only: [:show, :create, :update, :destroy]
     resources :follows, only: [:show, :create, :destroy]
