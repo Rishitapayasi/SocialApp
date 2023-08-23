@@ -42,7 +42,11 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-gem 'bcrypt-ruby'
+#use active model has_secure_password
+gem 'bcrypt' '~> 3.1.7'
+
+# use jwt for token based authentication
+gem 'jwt'
 
 #serializer
 gem 'active_model_serializers'

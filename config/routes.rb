@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root "user#index"
 
-  resources :users, shallow: true do
+  resources :users do
     resources :profiles, only: [:show, :create, :update, :destroy]
     resources :posts, only: [:show, :create, :update, :destroy]
     resources :follows, only: [:show, :create, :destroy]
@@ -12,7 +12,10 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
     resources :likes, only: [:create, :destroy] 
   end
-
+  
+  resources :users 
+    post '/auth/login',to: 'authentication#login'
+  
  
 end 
 
