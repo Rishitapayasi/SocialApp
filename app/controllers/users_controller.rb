@@ -1,7 +1,9 @@
+require "json_web_token"
 class UsersController < ApplicationController
+
   skip_before_action :authenticate_request, only: [:create]
   before_action :set_user, only: [:show, :update,:destroy]
-
+  
   def index
     @user = User.all
 
@@ -15,7 +17,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to @user
+      render json: @user
     else
       render json: @user.errors, status: 422
     end
@@ -30,18 +32,17 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    
-    @user.destroy
+     @user.destroy
   end
 
   private
   def user_params
-    params.permit(:email, :password, :password_confirmation)
+    params.permit(:email, :password)
   end 
 
 
   def set_user
     @user = User.find(params[:id])
-  end
+  end 
 
 end

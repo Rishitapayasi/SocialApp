@@ -15,7 +15,7 @@ class PostsController < ApplicationController
   def create
     
     # @post = current_user.posts.build(post_params)
-    @post = Post.new(user_params)
+     @post = Post.new(post_params)
     if @post.save
       render json: @post
     else

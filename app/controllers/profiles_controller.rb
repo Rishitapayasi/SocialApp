@@ -1,7 +1,6 @@
 class ProfilesController < ApplicationController
-  # before_action :authenticate_user, except:[:index, :show]
   before_action :set_profile, only: [ :show , :update ,:destroy]
-  # before_action :authorize_user, only:[:update, :destroy]
+
 
   def index
     @profile = UserProfile.all 
@@ -14,7 +13,7 @@ class ProfilesController < ApplicationController
   end
 
   def create 
-    @profile = UserProfile.new(profile_params)
+    @profile = UserProfile.create(profile_params)
 
     if @profile.save 
       # render json: @profile 

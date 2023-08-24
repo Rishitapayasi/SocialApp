@@ -43,7 +43,7 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 
 #use active model has_secure_password
-gem 'bcrypt' '~> 3.1.7'
+gem 'bcrypt' 
 
 # use jwt for token based authentication
 gem 'jwt'
