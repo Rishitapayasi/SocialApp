@@ -11,5 +11,12 @@ Rails.application.routes.draw do
   end
 
   post '/auth/login',to: 'authentication#login'
+
+  # get  'posts/id',action: :show, controller: 'posts'
+
+  # get 'posts',to: 'posts#show'
+
+  get '/posts/:id', to: 'posts#show', as: 'post'
+
 end 
 

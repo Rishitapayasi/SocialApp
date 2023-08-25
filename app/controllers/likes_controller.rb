@@ -1,9 +1,9 @@
 class LikesController < ApplicationController
-  #  before_action :authenticate_user 
+   before_action :authenticate_request
    
   def create
     @post = Post.find(params[:post_id])
-    @like = @post.likes.build(user: user_id)
+    @like = @current_user.likes.build(post: @post)
 
     if @like.save
      render plain: "liked the comment"
@@ -13,8 +13,8 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    @post = Post.find(params[:post_id])
-    @like = @post.likes.find(params[:id])
+   
+    @like = @current_user.likes.find(params[:id])
 
     if @like.destroy
       render plain:  "you unliked the post"

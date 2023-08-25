@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
+  before_action :authenticate_request, except:[:index, :show]
   before_action :set_profile, only: [ :show , :update ,:destroy]
 
 
@@ -13,7 +14,7 @@ class ProfilesController < ApplicationController
   end
 
   def create 
-    @profile = UserProfile.create(profile_params)
+    @profile = @current_user.build_user_profile(profile_params)
 
     if @profile.save 
       # render json: @profile 
@@ -24,15 +25,13 @@ class ProfilesController < ApplicationController
   end 
 
   def update 
-    # if params[:user_id] == @profile.user_id
+   
       if @profile.update(profile_params) 
-        render json: @user.profile 
+        render json: @profile
       else
         render json: @profile.errors, status: 422
       end
-    # else 
-    #   render json:{error:"you are not authorized to update this profile"}, status: 403
-    # end
+    
   end 
 
   def destroy  
@@ -40,20 +39,16 @@ class ProfilesController < ApplicationController
   end
  
   private 
+  
   def profile_params 
     params.permit(:full_name, :bio, :birth_date)
   end
 
   def set_profile
-    @profile = UserProfile.find(params[:id])
+    @profile = @current_user.user_profile
   end
   
-  # def authorize_user
-  #   unless current_user == @profile.user
-  #     flash[:error] = "you are not authorize to perform this action"
-  #     redirect_to post_path(@post)
-  #   end
-  # end
+  
 end
 
 

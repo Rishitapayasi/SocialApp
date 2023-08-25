@@ -4,6 +4,8 @@ class ApplicationController < ActionController::API
 
   before_action :authenticate_request
 
+ 
+
   private
     def authenticate_request
       header = request.headers['Authorization']
@@ -12,3 +14,4 @@ class ApplicationController < ActionController::API
       @current_user = User.find(decoded[:user_id])
     end
 end
+#error handling in jwt

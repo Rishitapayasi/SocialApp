@@ -1,9 +1,10 @@
 class FollowsController < ApplicationController
-#   before_action :authenticate_user, only:[:create, :destroy]
+ before_action :authenticate_request
 
   def create 
-    @user = User.find(params[:followed_id])
-    @follow = @user.follows_as_follower.build(followed: @user)
+    @follower_user = User.find(params[:follower_id])
+    @follow = @current_user.followers.build(followed: @user)
+    debugger
     if @follow.save 
       render plain: "you are now following this user"
     else 
@@ -13,8 +14,8 @@ class FollowsController < ApplicationController
   end 
 
   def destroy
-    @user = User.find(params[:followed_id])
-    @follow = @user.follows_as_follower.find_by(followed: @user)
+  
+    @follow = @current_user.follower.find_by(params[:id])
     if @follow.destroy 
       render plain: "you unfollow this user"
     else 
